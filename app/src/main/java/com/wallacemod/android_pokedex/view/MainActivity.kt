@@ -6,10 +6,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.wallacemod.android_pokedex.R
-import com.wallacemod.android_pokedex.api.ListPokemonApiResult
-import com.wallacemod.android_pokedex.api.PokeApiService
-import com.wallacemod.android_pokedex.list.PokemonItem
-import com.wallacemod.android_pokedex.list.PokemonListAdapter
+import com.wallacemod.android_pokedex.model.api.ListPokemonApiResult
+import com.wallacemod.android_pokedex.model.api.PokeApiService
+import com.wallacemod.android_pokedex.view.list.PokemonItem
+import com.wallacemod.android_pokedex.view.list.PokemonListAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

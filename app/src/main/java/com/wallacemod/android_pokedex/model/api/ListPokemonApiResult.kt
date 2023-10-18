@@ -1,4 +1,4 @@
-package com.wallacemod.android_pokedex.api
+package com.wallacemod.android_pokedex.model.api
 
 data class ListPokemonApiResult(
     val count: Int,

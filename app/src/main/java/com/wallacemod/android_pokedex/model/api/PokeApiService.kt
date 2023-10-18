@@ -1,6 +1,6 @@
-package com.wallacemod.android_pokedex.api
+package com.wallacemod.android_pokedex.model.api
 
-import com.wallacemod.android_pokedex.api.ListPokemonApiResult
+import com.wallacemod.android_pokedex.model.api.ListPokemonApiResult
 import retrofit2.Call
 import retrofit2.http.GET
 

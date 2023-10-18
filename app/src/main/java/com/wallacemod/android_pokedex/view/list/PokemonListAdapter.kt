@@ -1,4 +1,4 @@
-package com.wallacemod.android_pokedex.list
+package com.wallacemod.android_pokedex.view.list
 
 import android.view.LayoutInflater
 import android.view.View
