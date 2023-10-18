@@ -3,6 +3,7 @@ package com.wallacemod.android_pokedex.view
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.wallacemod.android_pokedex.R
@@ -10,6 +11,7 @@ import com.wallacemod.android_pokedex.model.api.ListPokemonApiResult
 import com.wallacemod.android_pokedex.model.api.PokeApiService
 import com.wallacemod.android_pokedex.view.list.PokemonItem
 import com.wallacemod.android_pokedex.view.list.PokemonListAdapter
+import com.wallacemod.android_pokedex.viewmodel.PokemonViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -23,42 +25,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://pokeapi.co/api/v2/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+        val pokemonViewModel = ViewModelProvider(this).get(PokemonViewModel::class.java)
+        val pokemonItems = pokemonViewModel.pokemonItems
 
-        val service = retrofit.create(PokeApiService::class.java)
+        val rvPokemon= findViewById<RecyclerView>(R.id.rvPokemon)
+        rvPokemon.layoutManager = LinearLayoutManager(this) //Define como vai ser disposto os itens
 
-        val call = service.listPokemon()
-
-        call.enqueue(object : Callback<ListPokemonApiResult> {
-            override fun onResponse(
-                call: Call<ListPokemonApiResult>,
-                response: Response<ListPokemonApiResult>
-            ) {
-                // Caso a requisição HTTP tenha sido bem sucedida
-                Log.d("POKEMON_API", response.body().toString())
-
-                response.body()?.let {
-
-                    val pokemonItems = it.results.mapIndexed() { index, result ->
-                        val number = (index + 1).toString().padStart(3,'0')
-                        PokemonItem(result.name,
-                            "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/$number.png")
-                    }.toTypedArray()
-
-                    val rvPokemon= findViewById<RecyclerView>(R.id.rvPokemon)
-                    rvPokemon.layoutManager = LinearLayoutManager(this@MainActivity) //Define como vai ser disposto os itens
-                    rvPokemon.adapter = PokemonListAdapter(pokemonItems)
-
-                }
-            }
-
-            override fun onFailure(call: Call<ListPokemonApiResult>, t: Throwable) {
-                // Caso a requisição HTTP tenha falhado
-                Log.e("POKEMON_API", "Erro ao carregar API.", t)
-            }
-        })
+        pokemonItems.observe(this){
+            rvPokemon.adapter = PokemonListAdapter(it.toTypedArray())
+        }
     }
 }
